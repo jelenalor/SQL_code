@@ -1,0 +1,86 @@
+-- 13. List the description of all assessments and the maximum mark obtained by the students in this
+-- assignment. Note that all assignments should be displayed, even if they have not been marked.
+
+SELECT a.description, MAX(m.score)
+FROM assessment AS a
+LEFT JOIN mark AS m ON a.assessmentID=m.assessmentID
+GROUP BY 1;
+
+-- 14. List all the departments together with the names of the courses they offer
+
+SELECT d.name, c.name
+FROM course AS c
+RIGHT JOIN department AS d ON c.departmentID=d.departmentID
+GROUP BY 1
+ORDER BY 1;
+
+-- 15. List the names of the students together with their scores
+
+SELECT s.fname,s.lname, m.score
+FROM student AS s
+LEFT JOIN mark AS m ON s.studentID=m.studentID
+ORDER BY s.lname;
+
+-- 16. List the names of the students together with their scores and the weights of each assessment
+
+SELECT s.fname,s.lname, m.score, a.weight
+FROM student AS s
+LEFT JOIN mark AS m ON s.studentID=m.studentID
+LEFT JOIN assessment AS a ON a.assessmentID=m.assessmentID
+ORDER BY s.lname;
+
+
+-- 17. List the names of the students together with their pondered scores (score*weight/100)
+
+SELECT s.fname,s.lname, (m.score*a.weight/100) AS pondered
+FROM student AS s
+LEFT JOIN mark AS m ON s.studentID=m.studentID
+LEFT JOIN assessment AS a ON a.assessmentID=m.assessmentID
+ORDER BY s.lname;
+
+
+-- CHECK
+
+
+-- Calculate the number of students in the most taken course
+SELECT y.courseID,MAX(y.c) FROM (SELECT courseID, COUNT(*) AS c FROM takesCourse GROUP BY 1) AS y;
+
+
+
+-- 21. List the name and the number of students of the most taken course
+SELECT c.name, MAX(COUNT(DISTINCT(studentID)))
+FROM takesCourses
+GROUP BY courseID
+HAVING MAX(COUNT(DISTINCT(studentID)));
+
+
+
+
+
+-- 22. Calculate the final marks for student 164 in all modules on course 36.
+SELECT mo.name,SUM(score)
+FROM mark AS m
+LEFT JOIN assessment AS a ON m.assessmentID=a.assessmentID
+LEFT JOIN module AS mo ON mo.moduleID=a.moduleID
+
+WHERE studentID=164 AND mo.courseID=36;
+
+
+-- 23. There is an spelling error on the city of some students it has been defined as ’Lodon’ but it should be
+’London’. Use a SQL query to correct this mistake
+
+UPDATE student
+SET city="London"
+WHERE city ="Lodon";
+
+-- 24. The city of all departments have not been defined. But you can know the city from the address (that
+is the address indicates the name of the city where the campus is). Use SQL queries to correct this
+mistake.
+
+UPDATE department
+SET city=replace(address,"Campus","")
+;
+
+
+
+ 

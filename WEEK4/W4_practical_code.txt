@@ -1,0 +1,59 @@
+-- #2
+CREATE TABLE artist (code INT NOT NULL AUTO_INCREMENT, 
+                     name VARCHAR(20) NOT NULL,
+                     birthPlace CHAR(20) NOT NULL, 
+                     age INT(11) NOT NULL, 
+                     style CHAR(20) NOT NULL,
+                     PRIMARY KEY (code)
+                     );
+                                  
+CREATE TABLE artwork(code INT NOT NULL AUTO_INCREMENT, 
+                     title CHAR(20) NOT NULL,
+                     a_code INT NOT NULL, 
+                     year INT(11) NOT NULL,
+                     price FLOAT NOT NULL,
+                     type CHAR(20) NOT NULL,
+                     PRIMARY KEY (code),
+                     FOREIGN KEY (a_code) REFERENCES artist (code)
+                     );
+                     
+                     
+CREATE TABLE style(code INT NOT NULL AUTO_INCREMENT,
+                      group_name VARCHAR(20),
+                      PRIMARY KEY (code)
+                      );
+                      
+                      
+                      
+CREATE TABLE group_art (a_code INT(11),
+                       s_code INT(11),
+                       PRIMARY KEY (a_code, s_code),
+                       FOREIGN KEY (a_code) REFERENCES artwork (code),
+                       FOREIGN KEY (s_code) REFERENCES style(code)
+                       );
+                       
+-- #3
+ALTER TABLE group_art RENAME TO artStyle;
+
+
+-- #4
+ALTER TABLE style ADD description VARCHAR(50);
+
+
+-- #5
+ALTER TABLE style MODIFY COLUMN description VARCHAR(100);
+
+
+-- #6
+ALTER TABLE artwork MODIFY COLUMN price FLOAT NOT NULL DEFAULT 0;
+
+
+-- #7
+ALTER TABLE style MODIFY COLUMN description VARCHAR(100) NOT NULL;
+
+
+-- #8
+ALTER TABLE style DROP COLUMN description;
+
+-- #9   -> CREATE VIEWS
+ 
